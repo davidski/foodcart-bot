@@ -74,15 +74,14 @@ def main():
                yesterday.date()]
 
     # parse out Foodcart objects from each of the bookings
-    carts = []
+    carts = {}
     for i in entries:
         for k in i['bookings']:
             logger.debug("Working on booking: %s" % k)
-            thiscart = parse_booking(k['truck'])
-            thiscart.start_time = parse_date(i['start_time'])
-            thiscart.end_time = parse_date(i['end_time'])
-            thiscart = [thiscart]
-            carts.extend(thiscart)
+            this_cart = parse_booking(k['truck'])
+            this_cart.start_time = parse_date(i['start_time'])
+            this_cart.end_time = parse_date(i['end_time'])
+            carts[this_cart.name] = this_cart
 
     send_to_slack(carts)
 
@@ -104,7 +103,7 @@ def send_to_slack(listings):
         "text": "%s food carts on site today." % len(listings)
     }
     attachments = []
-    for i in listings:
+    for i in listings.values():
         attachment = {
             "fallback": "%s|%s - Serving %s." % (i.name, i.url, ', '.join([str(x) for x in i.style])),
             "color": "#36a64f",
@@ -120,7 +119,7 @@ def send_to_slack(listings):
                  "short": True
                  },
                 {
-                    "title": "Cuisines",
+                    "title": "Cuisine",
                     "value": ', '.join([str(x) for x in i.style]),
                     "short": True
                 },
