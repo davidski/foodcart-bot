@@ -5,6 +5,7 @@ import dateutil.parser
 from datetime import datetime, timedelta
 import logging
 import pytz
+import inflect
 import os
 
 # set up logging
@@ -97,10 +98,12 @@ def send_to_slack(listings):
     #  Bon Appetit!
     # if len(0)
     #   There don't appear to be any bookings today!
+    p = inflect.engine()
     params = {
         "username": "CartBot",
         "icon_emoji": ":fork_and_knife:",
-        "text": "%s food carts on site today." % len(listings)
+        "text": "%s food %s on site today." % (p.number_to_words(len(listings)).capitalize(),
+                                               p.plural("cart", len(listings))),
     }
     attachments = []
     for i in listings.values():
