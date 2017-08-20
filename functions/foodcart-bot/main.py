@@ -114,17 +114,16 @@ def send_to_slack(listings):
             "title_link": i.url,
             "fields": [
                 {"title": "Service Starts",
-                 "value": datetime.strftime(i.start_time, "%r"),
+                 "value": "{s:%I}:{s.minute:02} {s:%p}".format(s=i.start_time).lstrip('0'),
                  "short": True
                  },
                 {"title": "Service Ends",
-                 "value": datetime.strftime(i.end_time, "%r"),
+                 "value": "{s:%I}:{s.minute:02} {s:%p}".format(s=i.end_time).lstrip('0'),
                  "short": True
                  },
-                {
-                    "title": "Cuisine",
-                    "value": ', '.join([str(x) for x in i.style]),
-                    "short": True
+                {"title": "Cuisine",
+                 "value": ', '.join([str(x) for x in i.style]),
+                 "short": True
                 },
             ],
         }
