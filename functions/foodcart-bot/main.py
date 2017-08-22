@@ -7,6 +7,7 @@ import logging
 import pytz
 import inflect
 import os
+import functools
 
 # set up logging
 logger = logging.getLogger('CartBot')
@@ -24,6 +25,7 @@ url = os.getenv('foodcart_url', 'https://www.seattlefoodtruck.com/api/events?pag
 slack_webhook = os.environ['slack_webhook_url']
 
 
+@functools.total_ordering
 class Foodcart:
     """Food cart booking object"""
 
@@ -34,6 +36,22 @@ class Foodcart:
         self.photo = None
         self.start_time = ""
         self.end_time = ""
+
+    # implement check for valid attribute
+    def _is_valid_operand(self, other):
+        return hasattr(other, "name")
+
+    # implement equality comparison
+    def __eq__(self, other):
+        if not self._is_valid_operand(other):
+            return NotImplemented
+        return self.name.lower() == other.name.lower()
+
+    # implement less-than comparison
+    def __lt__(self, other):
+        if not self._is_valid_operand(other):
+            return NotImplemented
+        return self.name.lower() < other.name.lower()
 
 
 def parse_date(datestring):
@@ -75,14 +93,14 @@ def main():
                yesterday.date()]
 
     # parse out Foodcart objects from each of the bookings
-    carts = {}
+    carts = []
     for i in entries:
         for k in i['bookings']:
             logger.debug("Working on booking: %s" % k)
             this_cart = parse_booking(k['truck'])
             this_cart.start_time = parse_date(i['start_time'])
             this_cart.end_time = parse_date(i['end_time'])
-            carts[this_cart.name] = this_cart
+            carts.append(this_cart)
 
     send_to_slack(carts)
 
@@ -106,7 +124,7 @@ def send_to_slack(listings):
                                                p.plural("cart", len(listings))),
     }
     attachments = []
-    for i in listings.values():
+    for i in sorted(listings):
         attachment = {
             "fallback": "%s|%s - Serving %s." % (i.name, i.url, ', '.join([str(x) for x in i.style])),
             "color": "#36a64f",
