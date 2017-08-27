@@ -140,7 +140,7 @@ def send_to_slack(listings):
                  "short": True
                  },
                 {"title": "Cuisine",
-                 "value": ', '.join([str(x) for x in i.style]),
+                 "value": ', '.join([str(x) for x in i.style]) if len(i.style) > 0 else "Unspecified",
                  "short": True
                 },
             ],
