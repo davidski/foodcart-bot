@@ -23,7 +23,7 @@ if not len(logger.handlers):
 url = os.getenv('foodcart_url', 'https://www.seattlefoodtruck.com/api/events?page=1&for_locations=40&' +
                 'with_active_trucks=true&include_bookings=true&with_booking_status=approved')
 slack_webhook = os.environ['slack_webhook_url']
-
+attachment_color = os.getenv('attachment_color', '#36a64f')
 
 @functools.total_ordering
 class Foodcart:
@@ -127,7 +127,7 @@ def send_to_slack(listings):
     for i in sorted(listings):
         attachment = {
             "fallback": "%s|%s - Serving %s." % (i.name, i.url, ', '.join([str(x) for x in i.style])),
-            "color": "#36a64f",
+            "color": attachment_color,
             "title": i.name,
             "title_link": i.url,
             "fields": [

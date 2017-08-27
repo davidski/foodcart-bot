@@ -8,11 +8,12 @@ When triggered, this function polls the Seattle Food Cart API for the
 booked food carts for the day. These bookings are parsed into custom objects 
 and posted to Slack via a webhook.
 
-Expected Environment Variables
+Environment Variables
 ------------------------------
 
 + slack_webhook_url - Full URL for a webhook to post to your slack team.
 + foodcart_url - Optional URL to the API endpoint to retrieve today's bookings.
++ attachment_color - Optional color to use for attachments when posting to Slack.
 
 Deployment
 ----------
