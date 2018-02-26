@@ -25,6 +25,7 @@ url = os.getenv('foodcart_url', 'https://www.seattlefoodtruck.com/api/events?pag
 slack_webhook = os.environ['slack_webhook_url']
 attachment_color = os.getenv('attachment_color', '#36a64f')
 
+
 @functools.total_ordering
 class Foodcart:
     """Food cart booking object"""
