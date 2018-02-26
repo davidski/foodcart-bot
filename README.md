@@ -1,11 +1,11 @@
 FoodCart-Bot
 ================
 
-Python based AWS Lambda function for posting the food cart's scheduled to 
+Python based AWS Lambda function for posting the food carts scheduled to 
 be on-site today to a Slack channel.
 
 When triggered, this function polls the Seattle Food Cart API for the 
-booked food carts for the day. These bookings are parsed into custom objects 
+food carts booked for today. These bookings are parsed into custom objects 
 and posted to Slack via a webhook.
 
 Environment Variables
@@ -18,11 +18,9 @@ Environment Variables
 Deployment
 ----------
 
-The included [Makefile](./Makefile) will build a ZIP file which can be 
-deployed to AWS Lambda. This ZIP file will include all dependencies.
-
-For executing, using a periodic CloudWatch event to fire the bot once a 
-day is one of the most straightforward mechanisms.
+The included [Makefile](./Makefile) will build a ZIP file, including all 
+dependencies, which can be deployed to AWS Lambda. A periodic CloudWatch event to fire the bot once a 
+day is the most straightforward mechanism to run this code automatically.
 
 Contributing
 ============
