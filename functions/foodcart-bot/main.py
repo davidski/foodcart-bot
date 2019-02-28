@@ -24,6 +24,7 @@ url = os.getenv('foodcart_url', 'https://www.seattlefoodtruck.com/api/events?pag
                 'with_active_trucks=true&include_bookings=true&with_booking_status=approved')
 slack_webhook = os.environ['slack_webhook_url']
 attachment_color = os.getenv('attachment_color', '#36a64f')
+missing_truck_url = os.getenv('default_truck_image_url')
 
 
 @functools.total_ordering
@@ -148,6 +149,8 @@ def send_to_slack(listings):
         }
         if i.photo is not None:
             attachment['thumb_url'] = "https://s3-us-west-2.amazonaws.com/seattlefoodtruck-uploads-prod/%s" % i.photo
+        if i.photo is None and missing_truck_url is not None:
+            attachment['thumb_url'] = missing_truck_url
         attachments.append(attachment)
     params['attachments'] = attachments
     headers = {'content-type': 'application/json'}

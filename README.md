@@ -11,9 +11,10 @@ and posted to Slack via a webhook.
 Environment Variables
 ------------------------------
 
-+ slack_webhook_url - Full URL for a webhook to post to your slack team.
++ slack_webhook_url - Full URL for a webhook to post to your Slack team.
 + foodcart_url - Optional URL to the API endpoint to retrieve today's bookings.
 + attachment_color - Optional color to use for attachments when posting to Slack.
++ default_truck_image_rul - Optional URL to an image to use when a image of the foodcart is not available.
 
 Deployment
 ----------
