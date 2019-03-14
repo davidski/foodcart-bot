@@ -70,6 +70,7 @@ def parse_booking(booking):
         cart.url = "https://seattlefoodtruck.com/food-trucks/%s" % booking['id']
     if 'featured_photo' in booking:
         cart.photo = booking['featured_photo']
+    logging.debug("Returning a cart object of %s" % cart)
     return cart
 
 
@@ -153,6 +154,7 @@ def send_to_slack(listings):
             attachment['thumb_url'] = missing_truck_url
         attachments.append(attachment)
     params['attachments'] = attachments
+    logging.debug("Cart attachments to send are %s" % attachments)
     headers = {'content-type': 'application/json'}
     # slack_api = 'https://slack.com/api/chat.postMessage'
     r = requests.post(slack_webhook, json=params, headers=headers)
